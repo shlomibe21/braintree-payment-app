@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Subscription and Payment</title>
+    <meta charset="UTF-8">
+    <!-- Responsive viewport tag, tells small screens that it's responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher:700|Roboto" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link href="./css/main.css" rel="stylesheet" type="text/css" />
+    <link href="./css/paymentGateway.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1>Subscription and Payment Hosted Fields</h1>
+
+    <div class="panel panel-default bootstrap-basic">
+        <div class="panel-heading">
+            <h3 class="panel-title"></h3>
+        </div>
+        <form class="panel-body" id="checkout" method="post" action="Payment">
+            <input type="hidden" id="userId" name="userId" value="">
+            <input type="hidden" id="udbId" name="udbId" value="">
+            <input type="hidden" id="subscriptionType" name="subscriptionType" value=''>
+            <input type="hidden" id="paymentGateway" name="paymentGateway" value="braintreeGateway" />
+            <input type="hidden" id="nonce" name="payment_method_nonce" />
+            <input type="hidden" id="postUrl" name="postUrl" value="checkout" />
+            <div><span id="creditCardsMsg" style="color: red;"></span></div>
+            <div id="existingPaymentMethods" style="display: none;">
+                <div id="paymentMethodsDetails"></div>
+                <h3>Other ways to pay: </h3>
+                <a id="newCardBtn" class="linkButton">
+                    <div style="font-size: 18px;">Add a New Card</div>
+                </a>
+            </div>
+            <div id="hostedFields" style="display: none;">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">Cardholder Name</label>
+                        <input type="input" class="form-control extra-field" id="cardholder-name" name="cardholder_Name"
+                            title="Required" placeholder="Cardholder Name">
+                        <span id="cardholder-name-msg" class="field-message"></span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="control-label" for="card-number">Card Number</label>
+                        <div class="form-control hosted-field" id="card-number" name="Card Number" title="Required"></div>
+                        <div id="card-image"></div>
+                        <span id="card-number-msg" class="field-message"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <div class="cardinfo-exp-date">
+                            <label class="control-label" for="expiration-date">Expiration Date</label>
+                            <div class="form-control hosted-field" id="expiration-date" name="Expiration Date" title="Required"></div>
+                            <span id="expiration-date-msg" class="field-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <div class="cardinfo-cvv">
+                            <label class="control-label" for="cvv">Security Code/CVV</label>
+                            <div class="form-control hosted-field" id="cvv" name="Security Code" title="Required"></div>
+                            <span id="cvv-msg" class="field-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="control-label">Postal Code</label>
+                        <div class="form-control hosted-field" id="postal-code" name="Postal Code" title="Required"></div>
+                        <span id="postal-code-msg" class="field-message"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">Street Address</label>
+                        <input type="input" class="form-control extra-field" id="street-address" name="street_Address"
+                            title="Required" placeholder="Street Address">
+                        <span id="street-address-msg" class="field-message"></span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">City</label>
+                        <input type="input" class="form-control extra-field" id="city" name="city" title="Required"
+                            placeholder="City">
+                        <span id="city-msg" class="field-message"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="stateDiv" class="form-group col-sm-6" style="display: none;">
+                        <label class="control-label">State</label>
+                        <select class="form-control extra-field" id="state" name="state">
+
+                        </select>
+                        <span id="state-msg" class="field-message"></span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">Country</label>
+                        <span id="selectCountriesList" class="selectCountriesList"></span>
+                        <span id="country-msg" class="field-message"></span>
+                    </div>
+                </div>
+
+
+                <a id="backToPaymentMethodsBtn" class="linkButton">Back to Payment Methods</a>
+            </div>
+            <div id="paypal-button" style="display: none;"><span>Or pay with:</span></div>
+            <div class="centeredContainer narrow" style="padding: 1em 0em 2em 0em;">
+                <div class="childContainer2Cols floatLeft">
+                    <button type="submit" id="submit-button" class="btn btn-success btn-lg center-block" style="display: none;">
+                        Click to Pay <span id="card-type"></span></button>
+                </div>
+                <div class="childContainer2Cols floatRight">
+                    <a id="cancel-button" name="Cancel Payment" class="btn btn-success btn-lg center-block" style="display: none;"
+                        href="${pageContext.request.contextPath}/query-annotations.jsp?userId=${param.userId}">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- Load PayPal's checkout.js Library. -->
+    <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4 log-level="warn"></script>
+    <!-- Load the client component. -->
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
+
+    <!-- Load Hosted Fields component. -->
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/hosted-fields.min.js"></script>
+
+    <!-- Load the PayPal Checkout component. -->
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/paypal-checkout.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/vault-manager.min.js"></script>
+
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/payments.js"></script>
+    <script type="text/javascript" src="/js/braintree-checkout-hosted-fields.js"></script>
+    <script type="text/javascript" src="/js/data-store.js"></script>
+</body>
+
+</html>

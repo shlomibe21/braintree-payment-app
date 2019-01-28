@@ -1,0 +1,287 @@
+body {
+    background-color: #fff;
+}
+
+.panel {
+    width: 80%;
+    margin: 2em auto;
+}
+
+.bootstrap-basic {
+    background: white;
+}
+
+.panel-body {
+    width: 90%;
+    margin: 2em auto;
+}
+
+.field-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    height: 12px;
+    display: block;
+}
+
+/* Braintree Hosted Fields styling classes*/
+.braintree-hosted-fields-focused { 
+    border: 1px solid #0275d8;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.braintree-hosted-fields-focused.focused-invalid {
+    border: 1px solid #ebcccc;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(100,100,0,.6);
+}
+
+@media (max-width: 670px) {
+    .btn {
+        white-space: normal;
+    }
+}
+
+.cardFrame {
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    margin: 1em auto;
+    border: 1px solid lightgray;
+    padding: 10px;            
+    font-size: 18px;
+    font-weight: bold;
+}
+.cardFrame:hover {
+    cursor: pointer;
+    border-color: green !important;
+}
+.cardFrame:focus {
+    cursor: pointer;
+    border-color: green !important;
+}
+
+.linkButton {
+    cursor: pointer;
+}
+
+.cardinfo-label {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+}
+
+.cardinfo-exp-date {
+    margin-right: 1em;
+    width: 100%;
+}
+
+.cardinfo-cvv {
+    width: 100%;
+}
+
+#button-pay {
+    cursor: pointer;
+    width: 16em;
+    font-size: 15px;
+    border: 0;
+    padding: 1.2em 1em;
+    color: #fff;
+    background: #282c37;
+    border-radius: 4px;
+    z-index: 0;
+    -webkit-transform: translateY(-100px);
+    transform: translateY(-100px);
+    -webkit-transition: all 500ms cubic-bezier(0.2, 1.3, 0.7, 1);
+    transition: all 500ms cubic-bezier(0.2, 1.3, 0.7, 1);
+    opacity: 0;
+    -webkit-appearance: none;
+}
+#button-pay:hover {
+    background: #535b72;
+}
+#button-pay:active {
+    -webkit-animation: cardIntro 200ms cubic-bezier(0.2, 1.3, 0.7, 1);
+    animation: cardIntro 200ms cubic-bezier(0.2, 1.3, 0.7, 1);
+}
+#button-pay.show-button {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.cardinfo-card-number {
+    position: relative;
+}
+
+#card-image {
+    position: absolute;
+    top: 2em;
+    right: 1em;
+    width: 44px;
+    height: 28px;
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/346994/card_sprite.png);
+    background-size: 86px 458px;
+    border-radius: 4px;
+    background-position: -100px 0;
+    background-repeat: no-repeat;
+    margin-bottom: 1em;
+}
+#card-image.visa {
+    background-position: 0 -398px;
+}
+#card-image.master-card {
+    background-position: 0 -281px;
+}
+#card-image.american-express {
+    background-position: 0 -370px;
+}
+#card-image.discover {
+    background-position: 0 -163px;
+}
+#card-image.maestro {
+    background-position: 0 -251px;
+}
+#card-image.jcb {
+    background-position: 0 -221px;
+}
+#card-image.diners-club {
+    background-position: 0 -133px;
+}
+
+.existing-card-image {
+    top: 1em;
+    right: 1em;
+    width: 50px;
+    height: 40px;
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    margin-bottom: 1em !important;
+    margin-right: 3em !important;
+}
+
+@media (max-width: 670px) {
+    .existing-card-image  {
+        float: none !important;
+    }
+}
+
+/*--------------------
+Inputs 
+--------------------*/
+.form-control {
+    color: #282c37;
+    font-size: 16px;
+    transition: color 0.1s;
+    line-height: 3;    
+}
+
+.input-wrapper {
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.86);
+    height: 2.75em;
+    border: 1px solid #eee;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+    padding: 5px 10px;
+    margin-bottom: 1em;
+}
+
+.cardinfo-card-number,
+.cardinfo-exp-date,
+.cardinfo-cvv {
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+    transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.braintree-hosted-fields-focused {
+    border-color: #5db6e8;
+}
+
+.braintree-hosted-fields-invalid {
+    border-color: #E53A40;
+    -webkit-animation: shake 500ms cubic-bezier(0.2, 1.3, 0.7, 1) both;
+    animation: shake 500ms cubic-bezier(0.2, 1.3, 0.7, 1) both;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+
+/*--------------------
+Animations
+--------------------*/
+@-webkit-keyframes cardIntro {
+    0% {
+        -webkit-transform: scale(0.8) translate(0, 0);
+        transform: scale(0.8) translate(0, 0);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+    }
+}
+@keyframes cardIntro {
+    0% {
+        -webkit-transform: scale(0.8) translate(0, 0);
+        transform: scale(0.8) translate(0, 0);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes shake {
+    10%,
+    90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        -webkit-transform: translate3d(1px, 0, 0);
+        transform: translate3d(1px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translate3d(-3px, 0, 0);
+        transform: translate3d(-3px, 0, 0);
+    }
+    40%,
+    60% {
+        -webkit-transform: translate3d(3px, 0, 0);
+        transform: translate3d(3px, 0, 0);
+    }
+}
+@keyframes shake {
+    10%,
+    90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        -webkit-transform: translate3d(1px, 0, 0);
+        transform: translate3d(1px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translate3d(-3px, 0, 0);
+        transform: translate3d(-3px, 0, 0);
+    }
+    40%,
+    60% {
+        -webkit-transform: translate3d(3px, 0, 0);
+        transform: translate3d(3px, 0, 0);
+    }
+}

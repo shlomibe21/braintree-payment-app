@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Subscription and Payment DropIn</title>
+    <meta charset="UTF-8">
+    <!-- Responsive viewport tag, tells small screens that it's responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher:700|Roboto" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="dropin-container"></div>
+
+    <div class="centeredContainer">
+        <form id="checkout" class="post-payment" method="post" action="Payment">
+            <input type="hidden" id="userId" name="userId" value="${param.userId}">
+            <input type="hidden" id="udbId" name="udbId" value="${param.udbId}">
+            <input type="hidden" id="subscriptionType" name="subscriptionType" value="">
+            <input type="hidden" id="subscription_type" name="subscription_type" value="">
+            <div><span id="message" style="color: red;"></span></div>
+            <input type="hidden" id="paymentGateway" name="paymentGateway" value="braintreeGateway" />
+            <input type="hidden" id="nonce" name="payment_method_nonce" />
+            <input type="submit" id="submit-button" value="Click to Pay" class="btn formBtn">
+            <div>
+                <a href="${pageContext.request.contextPath}/query-annotations.jsp?userId=${param.userId}"><input id="cancel-button"
+                        value="Cancel" name="Cancel Payment" class="btn formBtn"></a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script src="https://js.braintreegateway.com/web/dropin/1.9.2/js/dropin.min.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
+<script type="text/javascript" src="/js/payments.js"></script>
+<script type="text/javascript" src="/js/braintree-checkout-dropin.js"></script>
+
+</html>

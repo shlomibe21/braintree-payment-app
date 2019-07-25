@@ -1,16 +1,20 @@
 'use strict';
 
-//let submitButton = document.querySelector('#submit-button');
-//let cancelButton = document.querySelector('#cancel-button');
-//let paypalButton = document.querySelector('#paypal-button');
 let existingPaymentMethodsCount = 0;
+// Indicates if user has the existingPaymentMethodsView open or not
 let existingPaymentMethodsView = false;
 let existingNonce = null;
-let postUrl = "/checkouts/new/demo_customer_123";
+let postUrl = "/checkout/newWithCustomerId";
+let subscriptionType;
 let subscriptionPrice;
 
+// If user is not authenticated go to login page
+if (!localAuthToken) {
+    window.location.href = "/login.html";
+}
+
 function displayPaymentForm() {
-    let getUrl = "/checkouts/new/demo_customer_123";
+    let getUrl = "/checkout/newWithCustomerId";
     //let udbId = document.getElementById('udbId').value;
     //let postData = {"udbId": udbId};
     let clientToken;
@@ -23,29 +27,31 @@ function displayPaymentForm() {
     console.log(userInfo.customerId);
 
     let udbId = ''; //userInfo.customerId;
-    let postData = {"udbId": udbId};
+    let postData = {
+        "udbId": udbId
+    };
 
-    let subscriptionType = getQueryVariable(inUrl, 'subType');
-    if (subscriptionType === 'MonthlyPlan') {
+    subscriptionType = getQueryVariable(inUrl, 'subType');
+    if (subscriptionType === 'OncaBasic') {
         subscriptionPrice = getSubscriptionPrice(subscriptionType);
-    }
-    else if (subscriptionType === 'YearlyPlan') {
+    } else if (subscriptionType === 'OncaStandard') {
         subscriptionPrice = getSubscriptionPrice(subscriptionType);
-    }
-    else {
+    } else if (subscriptionType === 'OncaPremium') {
+        subscriptionPrice = getSubscriptionPrice(subscriptionType);
+    } else {
         //alert("Subscription type is not defined");
         $('#message').text("Error: subscription type is not defined");
         return;
     }
-
-    // Add list of countries to be selected by the user to the page
-    selectCountriesTemplate();
 
     // Get the info from the API server for the checkout page
     $.ajax({
         url: getUrl,
         type: 'GET',
         data: '',
+        headers: {
+            "Authorization": 'Bearer ' + localAuthToken
+        },
         dataType: 'json',
         cache: false,
         beforeSend: function () {
@@ -57,8 +63,7 @@ function displayPaymentForm() {
                 if (responseJson.alertMessage) {
                     alert(responseJson.alertMessage);
                 }
-                if (responseJson.creditCards) {
-                }
+                if (responseJson.creditCards) {}
                 if (responseJson.clientToken) {
                     clientToken = responseJson.clientToken;
                     braintree.client.create({
@@ -71,8 +76,8 @@ function displayPaymentForm() {
                         }
 
                         braintree.vaultManager.create({
-                            client: clientInstance
-                        },
+                                client: clientInstance
+                            },
                             function (err, vm) {
                                 if (err) {
                                     $("#processingModal").fadeOut();
@@ -91,12 +96,12 @@ function displayPaymentForm() {
                                         existingPaymentMethodsCount = paymentMethods.length;
                                         existingPaymentMethodsView = true;
                                         $("#processingModal").fadeOut();
-                                        selectDisplayPage("existingPaymentMethods");
+                                        selectDisplayPage("existing-payment-methods");
                                         displayButtons(true);
                                         // an array of payment methods
                                         paymentMethods.forEach(function (paymentMethod) {
                                             // Create a new div for each payment method and add the information to display to the user.
-                                            element = $("<div id='cardFrame" + idx + "' class='cardFrame'></div>").appendTo('#paymentMethodsDetails');
+                                            element = $("<div id='cardFrame" + idx + "' class='cardFrame'></div>").appendTo('#payment-methods-details');
                                             let methodImage;
                                             if (paymentMethod.type === "PayPalAccount") {
                                                 methodImage = $(element).append("<div class='existing-card-image' style='float: left;'></div>");
@@ -144,7 +149,7 @@ function displayPaymentForm() {
                                             // Add click event for each div
                                             $('.cardFrame').off().on("click", function (event) {
                                                 // When user clicks on the payment method div change color and add ok glyphicon
-                                                let children = $('#paymentMethodsDetails').children();
+                                                let children = $('#payment-methods-details').children();
                                                 //alert("children: " + children.length);
                                                 for (let i = 0; i < children.length; i++) {
                                                     // Change all children to default color and remove ok glyphicon
@@ -323,7 +328,7 @@ function displayPaymentForm() {
                         });
                     });
 
-                    $('#newCardBtn').off().on("click", function () {
+                    $('#new-card-btn').off().on("click", function () {
                         existingNonce = null;
                         existingPaymentMethodsView = false;
                         selectDisplayPage("hostedFields");
@@ -331,7 +336,7 @@ function displayPaymentForm() {
                     $('#backToPaymentMethodsBtn').off().on("click", function () {
                         existingNonce = null;
                         existingPaymentMethodsView = true;
-                        selectDisplayPage("existingPaymentMethods");
+                        selectDisplayPage("existing-payment-methods");
                     });
                 }
             }
@@ -340,23 +345,23 @@ function displayPaymentForm() {
             alert("Error while receiving data! Please try again or contact support!");
             $("#processingModal").fadeOut();
         },
-        complete: function () {
-        }
+        complete: function () {}
     });
 }
 
 function submit(event, hostedFieldsInstance) {
+    let existingSubscriptionId = $('#subscription-id').val();
+    // existingPaymentMethodsView is open
     if (existingPaymentMethodsView === true) {
         if (existingNonce) {
             // Update hidden nonce field in the form and submit to the server
             document.querySelector('#nonce').value = existingNonce;
             //displayButtons(false);
-            //formPost("Payment?action=" + postUrl, "#" + postUrl);
-            paymentPost(postUrl, subscriptionPrice, existingNonce);
+            paymentPost(postUrl, subscriptionType, subscriptionPrice, existingNonce, existingSubscriptionId);
         } else {
             alert("Please select from one of the existing payment methods below, or add a new payment method!");
         }
-    } else {
+    } else { // existingPaymentMethodsView === false
         let errors = false;
         // Get hosted fields state
         let state = hostedFieldsInstance.getState();
@@ -370,6 +375,8 @@ function submit(event, hostedFieldsInstance) {
         hostedFieldsInstance.tokenize({
             cardholderName: event.target.cardholder_Name.value,
             billingAddress: {
+                firstName: event.target.first_Name.value,
+                lastName: event.target.last_Name.value,
                 streetAddress: event.target.street_Address.value,
                 locality: event.target.city.value,
                 region: event.target.state.value,
@@ -378,7 +385,7 @@ function submit(event, hostedFieldsInstance) {
             }
         }, function (tokenizeErr, payload) {
             if (tokenizeErr) {
-                //displayButtons(true);
+                displayButtons(true);
                 switch (tokenizeErr.code) {
                     //case 'HOSTED_FIELDS_FIELDS_EMPTY':
                     // occurs when none of the fields are filled in
@@ -420,11 +427,10 @@ function submit(event, hostedFieldsInstance) {
                 }
             } else {
                 // Update hidden nonce field in the form and submit to the server
-                //document.querySelector('#nonce').value = payload.nonce;
-                //alert("payload.nonce: " + payload.nonce);
+                //document.querySelector('#nonce').value = payload.nonce
+                alert("payload.nonce: " + payload.nonce);
                 //displayButtons(false);
-                //formPost("Payment?action=" + postUrl, "#" + postUrl);
-                paymentPost(postUrl, subscriptionPrice, payload.nonce);
+                paymentPost(postUrl, subscriptionType, subscriptionPrice, payload.nonce, existingSubscriptionId);
             }
         });
     }
@@ -433,7 +439,7 @@ function submit(event, hostedFieldsInstance) {
 function selectDisplayPage(pageName) {
     if (pageName === "hostedFields") {
         $('.panel-title').text("Enter Card Details");
-        $('#existingPaymentMethods').attr("style", "display: none");
+        $('#existing-payment-methods').attr("style", "display: none");
         $('#hostedFields').attr("style", "display: block");
         if (existingPaymentMethodsCount > 0) {
             $('#backToPaymentMethodsBtn').attr("style", "display: block");
@@ -441,10 +447,10 @@ function selectDisplayPage(pageName) {
             $('#backToPaymentMethodsBtn').attr("style", "display: none");
         }
         $('#message').text("");
-    } else if (pageName === "existingPaymentMethods") {
+    } else if (pageName === "existing-payment-methods") {
         $('.panel-title').text("Existing Payment Methods");
         $('#hostedFields').attr("style", "display: none");
-        $('#existingPaymentMethods').attr("style", "display: block");
+        $('#existing-payment-methods').attr("style", "display: block");
         $('#message').text("Select from the existing payment methods below or add a new payment method.");
     }
 }
@@ -462,7 +468,7 @@ function displayButtons(display) {
 }
 
 function extraFieldRequiredValidation(elem) {
-    /*let elemId = elem.id;
+    let elemId = elem.id;
     let elemVal = $("#" + elemId).val();
     let elemName = $("#" + elemId).attr('name');
     let elemTitle = $("#" + elemId).attr('title');
@@ -502,7 +508,7 @@ function extraFieldRequiredValidation(elem) {
             $('#' + elemId).parents('.form-group').addClass('has-success');
         }
     }
-    return errors;*/
+    return errors;
 }
 
 function submitExtraFieldsValidation() {
@@ -596,7 +602,6 @@ function hostedFieldsNotEmptyEvent(field) {
 }
 
 function handlePayment() {
-    //alert("payment-page!!!");
     displayPaymentForm();
 }
 

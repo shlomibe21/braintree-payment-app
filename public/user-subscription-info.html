@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Subscription and Payment</title>
+    <meta charset="UTF-8">
+    <!-- Responsive viewport tag, tells small screens that it's responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher:700|Roboto" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="nav-bar">
+        <p class="logo">
+            <a href="/">OncaPayment</a>
+        </p>
+        <nav role="navigation" class="top-nav">
+        </nav>
+    </div>
+    <header role="banner">
+        <h1>Subscription and Payment Information</h1>
+    </header>
+    <form name="Subscription Form Submit" id="subscriptionForm" method="POST">
+        <input type="hidden" id="url" name="urlName" value="Subscription">
+        <input type="hidden" id="userId" name="userId" value="">
+        <!--<input type="hidden" id="udbId" name="udbId" value="${param.udbId}" >-->
+        <div class="centeredContainer">
+            <div><span id="message"></span></div>
+            <div id="currentSubscriptionInfo">
+
+            </div>
+        </div>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/authentication.js"></script>
+    <script type="text/javascript" src="/js/user-subscription-info.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</body>
+
+</html>

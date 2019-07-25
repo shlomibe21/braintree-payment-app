@@ -144,6 +144,14 @@ fieldset {
     margin-right: auto;  
 }
 
+registration-page, .login-page {
+    background: url('../images/head-2748333_1920.jpg') no-repeat center center fixed; 
+    background-position: 0px 0px; 
+}
+
+.registration-page h1, .login-page h1 {
+    color: white;
+}
 
 .register-form, .login-form {
     background-color: rgba(255,255,255,0.9);
@@ -166,6 +174,23 @@ fieldset {
 
 .register-form .btn, .login-form .btn {
     width: 100%;
+}
+
+form-input {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+    padding-left: 8px;
+}
+
+form label {
+    display: inline-block;
+    color: purple;
 }
 
 @media screen and (min-width: 600px) {

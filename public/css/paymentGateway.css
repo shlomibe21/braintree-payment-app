@@ -24,6 +24,10 @@ body {
     display: block;
 }
 
+.credit-cards-msg {
+    color: red;
+}
+
 /* Braintree Hosted Fields styling classes*/
 .braintree-hosted-fields-focused { 
     border: 1px solid #0275d8;
@@ -60,7 +64,7 @@ body {
     border-color: green !important;
 }
 
-.linkButton {
+.link-button {
     cursor: pointer;
 }
 

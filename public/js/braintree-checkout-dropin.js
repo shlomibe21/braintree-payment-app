@@ -6,7 +6,7 @@ let currentInstance;
 
 function displayPaymentForm() {
     let inUrl = window.location;
-    let url = "/checkouts/new";
+    let url = "/checkout/new";
     //let udbId = document.getElementById('udbId').value;
     //let postData = {"udbId": udbId};
     let clientToken;
@@ -15,10 +15,10 @@ function displayPaymentForm() {
     $('#cancel-button').hide();
 
     let subscriptionType = getQueryVariable(inUrl, 'subType');
-    if (subscriptionType === 'MonthlyPlan') {
+    if (subscriptionType === 'OncaBasic') {
         subscriptionPrice = getSubscriptionPrice(subscriptionType);
     }
-    else if (subscriptionType === 'YearlyPlan') {
+    else if (subscriptionType === 'OncaStandard') {
         subscriptionPrice = getSubscriptionPrice(subscriptionType);
     }
     else {
@@ -112,7 +112,7 @@ $('.post-payment').submit(event => {
         $('#submit-button').hide();
         $('#cancel-button').hide();
 
-        paymentPost("/checkouts", subscriptionPrice, payload.nonce)
+        paymentPost("/checkout", subscriptionPrice, payload.nonce)
     });
 });
 

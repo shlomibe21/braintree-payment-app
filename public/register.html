@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Subscription and Payment</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./images/time-3040144_640.jpg" id="favicon">
+    <!-- Responsive viewport tag, tells small screens that it's responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher:700|Roboto" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="registration-page">
+    <div class="nav-bar">
+        <p class="logo">
+            <a href="/">OncaPayment</a>
+        </p>
+        <nav role="navigation" class="top-nav">
+        </nav>
+    </div>
+    <header role="banner">
+        <h1>Welcome to OncaPayment</h1>
+    </header>
+    <main role=main>
+        <form role="form" class="register-form centered-container narrow">
+            <h2 class="message">Register</h2>
+            <div class="js-error-message"></div>
+            <fieldset>
+                <div>
+                    <label for="firstName">*First name</label>
+                    <input type="text" name="firstName" class="form-input" placeholder="*First name" required
+                        autocomplete="off" />
+                </div>
+                <div>
+                    <label for="lastName">*Last name</label>
+                    <input type="text" name="lastName" class="form-input" placeholder="*Last name" required
+                        autocomplete="off" />
+                </div>
+                <div>
+                    <label for="username">*Username</label>
+                    <input type="text" name="username" class="form-input" placeholder="*Username" required autocomplete="off" />
+                </div>
+                <div>
+                    <label for="password">*Password - Min. 10 characters</label>
+                    <input type="password" name="password" class="form-input" placeholder="*Password - Min. 10 characters"
+                        required />
+                </div>
+            </fieldset>
+            <div>
+                <button type="submit" class="btn submit-button">Register</button>
+            </div>
+            <div>
+                <p class="message">Already registered?
+                    <a href="/login.html">Sign In</a>
+                </p>
+            </div>
+        </form>
+    </main>
+
+    <footer role="contentinfo">
+        <p>
+            &copy;
+            <script type="text/javascript">
+                let today = new Date();
+                let year = today.getFullYear();
+                document.write(year);
+            </script>, Shlomi Benshlomo (Onca, Inc.)
+        </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/authentication.js"></script>
+    <script type="text/javascript" src="/js/register.js"></script>
+</body>
+
+</html>

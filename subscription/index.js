@@ -1,5 +1,6 @@
 'use strict';
 
-const {router} = require('./router');
+const { subscriptionsDB } = require('../subscription/models');
+const { router } = require('./router');
 
-module.exports = {router};
+module.exports = { subscriptionsDB, router };

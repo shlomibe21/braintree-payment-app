@@ -13,7 +13,7 @@
 <body>
     <div id="dropin-container"></div>
 
-    <div class="centeredContainer">
+    <div class="centered-container">
         <form id="checkout" class="post-payment" method="post" action="Payment">
             <input type="hidden" id="userId" name="userId" value="${param.userId}">
             <input type="hidden" id="udbId" name="udbId" value="${param.udbId}">
@@ -25,7 +25,7 @@
             <input type="submit" id="submit-button" value="Click to Pay" class="btn formBtn">
             <div>
                 <a href="${pageContext.request.contextPath}/query-annotations.jsp?userId=${param.userId}"><input id="cancel-button"
-                        value="Cancel" name="Cancel Payment" class="btn formBtn"></a>
+                        value="Cancel" name="cancel-payment" class="btn formBtn"></a>
             </div>
 
         </form>
